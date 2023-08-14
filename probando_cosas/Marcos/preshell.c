@@ -7,10 +7,10 @@
 */
 char **tokenizer(char *input, char *delim)
 {
-    char **tokens = NULL; 
-	char *tokensaver = NULL;  
+	char **tokens = NULL;
+	char *tokensaver = NULL;
 	int tcnt = input[0] == ' ' || input[0] == '\n' || input[0] == '\t' ? 0 : 1;
-	int iterator = 0, counter = 1, l = 0;
+	int iterator = 0, counter = 1;
 
 	for (; input[iterator] != '\0'; iterator++)
 	{
@@ -22,18 +22,18 @@ char **tokenizer(char *input, char *delim)
 	}
 	tokens = malloc((sizeof(char *)) * tcnt);
 	if (!tokens)
-		return(NULL);
+		return (NULL);
 	tokensaver = strtok(input, delim);
 	if (!tokensaver)
-		return(NULL);
+		return (NULL);
 	tokens[0] = strdup(tokensaver);
 	if (!tokens[0])
 	{
 		free(tokensaver);
 		free(tokens);
-		return(NULL);
+		return (NULL);
 	}
-	for (; counter <= tcnt; counter++)
+	for (counter = 1; counter <= tcnt; counter++)
 	{
 			tokensaver = NULL;
 			tokensaver = strtok(NULL, delim);
@@ -42,7 +42,8 @@ char **tokenizer(char *input, char *delim)
 			tokens[counter] = strdup(tokensaver);
 	}
 	tokens[tcnt - 1] = NULL;
-	return(tokens);
+	tokens[]
+	return (tokens);
 }
 /**
  * free_grid - free up 2 grid
@@ -69,7 +70,7 @@ char *_getenv(const char *str)
 
 	char *ifoundit = NULL, *blah = NULL;
 	int i = 0;
-	
+
 	for (; environ[i]; i++)
 	{
 		if (strncmp(environ[i], str, 4) == 0)
@@ -77,15 +78,37 @@ char *_getenv(const char *str)
 			ifoundit = environ[i];
 			blah = strtok(ifoundit, "=\n");
 			blah = strtok(NULL, "=\n");
-            return (blah);
-        }
-    }
-    return(NULL);
+			return (blah);
+		}
+	}
+	return (NULL);
 }
+/**
+ *executioner - Executes a comand.
+ *@path: The array with all routes.
+ *@arr: An array with the command as the first string.
+ *
+ *Return: Void.
+ */
+void executioner(char **path, char **arr)
+{
+	pid_t pid;
+	struct stat full;
+	int i = 0, f = 0;
+
+	while (1)
+	{
+		f = stat(path[i], &full);
+		if (f == 0)
+			pid = fork();
+			if (pid == 0)
+				execve(path[i], arr, NULL);
+		i++;
+	}
 /**
  * main - function that emulates a simple shell
 */
-int main()
+int main(void)
 {
 	char *prompt = "Type_Bit$h ";
 	char *input = NULL, *pathenv = NULL, *pathdelim = NULL, *inputdelim = NULL;
@@ -115,6 +138,7 @@ int main()
 		pathdelim = ":";
 		pathenv = _getenv("PATH");
 		path = tokenizer(pathenv, pathdelim);
+		executioner(path, arr);
 		free_grid(arr);
 	}
 	return (EXIT_SUCCESS);
