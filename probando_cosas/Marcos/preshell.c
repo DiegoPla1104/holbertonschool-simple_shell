@@ -87,7 +87,7 @@ char *_getenv(const char *str)
 */
 int main()
 {
-	char *prompt = "Type_Bi$h ";
+	char *prompt = "Type_Bit$h ";
 	char *input = NULL, *pathenv = NULL, *pathdelim = NULL, *inputdelim = NULL;
 	char **arr = NULL, **path = NULL;
 	size_t n = 0;
