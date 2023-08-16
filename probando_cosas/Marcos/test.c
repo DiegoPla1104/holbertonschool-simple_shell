@@ -76,12 +76,12 @@ char *_getenv(const char *str)
 			if (!ifoundit)
 				return (NULL);
 			envivar = strtok(ifoundit, "=\n");
-			envivar = strtok(NULL, "=\n");
+			envivar = strdup(strtok(NULL, "=\n"));
 			free(ifoundit);
+			return (envivar);
 		}
 	}
-	return (envivar);
-	/*return (NULL);*/
+	return (NULL);
 }
 /**
  *executioner - Execd holcutes a comand.
@@ -94,11 +94,10 @@ int executioner(char **path, char **arr)
 {
 	pid_t pid;
 	struct stat full;
-	int f = 1, n = 0;
-	char *valid_path = NULL;
+	int n = 0;
+	char *valid = NULL;
 
-	f = stat(arr[0], &full);
-	if (f == 0)
+	if (stat(arr[0], &full) == 0)
 	{
 		pid = fork();
 		if (pid == 0)
@@ -108,26 +107,29 @@ int executioner(char **path, char **arr)
 		return (0); }
 	for (; path[n] != NULL; n++)
 	{
-		valid_path = malloc(strlen(path[n]) + strlen(arr[0]) + 2);
-		if (!valid_path)
+		valid = malloc(strlen(path[n]) + strlen(arr[0]) + 2);
+		if (!valid)
 			return (-1);
-		else
-		{	valid_path = strcpy(valid_path, path[n]);
-			valid_path = strcat(valid_path, "/");
-			valid_path = strcat(valid_path, arr[0]);
-			f = stat(valid_path, &full);
-			if (f == 0)
-			{	pid = fork();
-				if (pid == 0)
-				{	execve(valid_path, arr, NULL);
-					free(valid_path);
-					exit(0); }
-				else
-				{	wait(NULL);
-					free(valid_path); }
-				return (0); }
-			free(valid_path); } }
-	if (path[n] == NULL && f != 0)
+		strcpy(valid, path[n]), strcat(valid, "/"), strcat(valid, arr[0]);
+		if (stat(valid, &full) == 0)
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				execve(valid, arr, NULL);
+				free(valid);
+				exit(0);
+			}
+			else
+			{
+				wait(NULL);
+				free(valid);
+			}
+			return (0);
+		}
+		free(valid);
+	}
+	if (path[n] == NULL)
 		printf("bash: %s: command not found\n", arr[0]);
 	return (-1); }
 /**

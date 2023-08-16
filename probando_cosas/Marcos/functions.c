@@ -43,5 +43,6 @@ char **tokenpath(char *input, char *delim)
 		tokens[counter] = strdup(tokensaver);
 	}
 	tokens[tcnt - 1] = NULL;
+	free(input);
 	return (tokens);
 }
