@@ -12,8 +12,10 @@
 #include <sys/wait.h>
 
 extern char **environ;
-char **tokenizer(char *input, char *delim);
+char **tokeninput(char *input, char *delim);
 void free_grid(char **grid);
 char *_getenv(const char *str);
+int executioner(char **path, char **arr);
+char **tokenpath(char *input, char *delim);
 
 #endif
