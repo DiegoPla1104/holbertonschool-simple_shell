@@ -114,7 +114,7 @@ int executioner(char **path, char **arr)
 	}
 	for (; path[n] != NULL; n++)
 	{
-		valid_path = malloc(strlen(path[n]) + strlen(arr[0]) + 2); /*LEAK*/
+		valid_path = malloc(strlen(path[n]) + strlen(arr[0]) + 2);
 		if (!valid_path)
 		{
 			return (-1);
@@ -132,9 +132,13 @@ int executioner(char **path, char **arr)
 				{
 					execve(valid_path, arr, NULL);
 					free(valid_path);
+					exit(0);
 				}
 				else
+				{
 					wait(NULL);
+					free(valid_path);
+				}
 				return (0);
 			}
 			free(valid_path);
