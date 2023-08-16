@@ -20,31 +20,25 @@ char **tokeninput(char *input, char *delim)
 	}
 	tokens = malloc((sizeof(char *)) * tcnt);
 	if (!tokens)
-	{
-		free(input);
+	{	free(input);
 		return (NULL);
 	}
 	tokensaver = strtok(input, delim);
 	if (!tokensaver)
-	{
-		free(tokens);
+	{	free(tokens);
 		return (NULL);
 	}
 	tokens[0] = strdup(tokensaver);
 	if (!tokens[0])
-	{
-		free(tokens);
+	{	free(tokens);
 		free(input);
-		return (NULL);
-	}
+		return (NULL); }
 	for (cnt = 1; cnt <= tcnt; cnt++)
-	{
-		tokensaver = NULL;
+	{	tokensaver = NULL;
 		tokensaver = strtok(NULL, delim);
 		if (!tokensaver)
 			break;
-		tokens[cnt] = strdup(tokensaver);
-	}
+		tokens[cnt] = strdup(tokensaver); }
 	tokens[tcnt - 1] = NULL;
 	return (tokens);
 }
@@ -83,10 +77,11 @@ char *_getenv(const char *str)
 				return (NULL);
 			envivar = strtok(ifoundit, "=\n");
 			envivar = strtok(NULL, "=\n");
-			return (envivar);
+			free(ifoundit);
 		}
 	}
-	return (NULL);
+	return (envivar);
+	/*return (NULL);*/
 }
 /**
  *executioner - Execd holcutes a comand.
@@ -110,44 +105,31 @@ int executioner(char **path, char **arr)
 			execve(arr[0], arr, NULL);
 		else
 			wait(NULL);
-		return (0);
-	}
+		return (0); }
 	for (; path[n] != NULL; n++)
 	{
 		valid_path = malloc(strlen(path[n]) + strlen(arr[0]) + 2);
 		if (!valid_path)
-		{
 			return (-1);
-		}
 		else
-		{
-			valid_path = strcpy(valid_path, path[n]);
+		{	valid_path = strcpy(valid_path, path[n]);
 			valid_path = strcat(valid_path, "/");
 			valid_path = strcat(valid_path, arr[0]);
 			f = stat(valid_path, &full);
 			if (f == 0)
-			{
-				pid = fork();
+			{	pid = fork();
 				if (pid == 0)
-				{
-					execve(valid_path, arr, NULL);
+				{	execve(valid_path, arr, NULL);
 					free(valid_path);
-					exit(0);
-				}
+					exit(0); }
 				else
-				{
-					wait(NULL);
-					free(valid_path);
-				}
-				return (0);
-			}
-			free(valid_path);
-		}
-	}
+				{	wait(NULL);
+					free(valid_path); }
+				return (0); }
+			free(valid_path); } }
 	if (path[n] == NULL && f != 0)
 		printf("bash: %s: command not found\n", arr[0]);
-	return (-1);
-}
+	return (-1); }
 /**
  * main - function that emulates a simple shell
  * Return: EXIT_SUCCESS
