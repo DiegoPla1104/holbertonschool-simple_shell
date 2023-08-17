@@ -13,7 +13,7 @@ Depending on the command passed into it, looks for it in the environment variabl
 ## Flowchart
 
 Flowchart to explain how we aprroched the proyect
-![Screeshot](/docs/images/Flowchart_Simple_Shell.png)
+![Screeshot](/docs/images/Flowchart Simple Shell.png)
 
 ## Exit Values
 
