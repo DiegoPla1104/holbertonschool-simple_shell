@@ -145,7 +145,7 @@ int main(void)
 {
 	int prompt = isatty(STDIN_FILENO);
 	char *input = NULL, *pathenv = NULL, *pathdelim = ":", *inputdelim = " \t\n";
-	char **arr = NULL, **path = NULL;
+	char **arr = NULL, **path = NULL, **envi = NULL;
 	size_t n = 0;
 	ssize_t ret = 0;
 
@@ -156,8 +156,9 @@ int main(void)
 		fflush(stdin);
 		ret = getline(&input, &n, stdin);
 		if (ret == EOF)
-		{
 			free(input);
+			free(input);
+		{
 			break;
 		}
 		arr = tokeninput(input, inputdelim);
@@ -165,15 +166,14 @@ int main(void)
 			continue;
 		if (strcmp(arr[0], "exit") == 0)
 		{
-			free(input);
-			free_grid(arr);
+			free(input), free_grid(arr);
 			return (0);
 		}
-		pathenv = _getenv("PATH");
-		path = tokenpath(pathenv, pathdelim);
-		executioner(path, arr);
-		free_grid(arr);
-		free_grid(path);
+		if (strcmp(arr[0], "env") == 0)
+			for (envi = environ; *envi != NULL; envi++)
+				printf("%s\n", *envi);
+		pathenv = _getenv("PATH"), path = tokenpath(pathenv, pathdelim);
+		executioner(path, arr), free_grid(arr), free_grid(path);
 		if (prompt == 0 && ret == -1)
 		{
 			free(input);
