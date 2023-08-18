@@ -126,10 +126,7 @@ int executioner(char **path, char **arr)
 		free(valid);
 	}
 	if (path[n] == NULL)
-	{
-		if (isatty(STDIN_FILENO) == 1)
-			printf("bash: %s: command not found\n", arr[0]);
-	}
+			fprintf(strerror, "bash: %s: command not found\n", arr[0]);
 	return (-1);
 }
 		/**
