@@ -156,9 +156,8 @@ int main(void)
 		fflush(stdin);
 		ret = getline(&input, &n, stdin);
 		if (ret == EOF)
-			free(input);
-			free(input);
 		{
+			free(input);
 			break;
 		}
 		arr = tokeninput(input, inputdelim);
