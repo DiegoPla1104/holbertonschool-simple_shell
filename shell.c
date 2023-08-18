@@ -103,7 +103,7 @@ int executioner(char **path, char **arr)
 		if (pid == 0)
 			execve(arr[0], arr, environ);
 		else if (pid == -1)
-			perror("Fork failed"), exit(EXIT_FAILURE);
+			fprintf(stderr, "./hsh: 1: %s: not found\n", arr[0]), exit(127);
 		else
 			wait(NULL);
 		return (0); }
@@ -126,7 +126,7 @@ int executioner(char **path, char **arr)
 		free(valid);
 	}
 	if (path[n] == NULL)
-			fprintf(stderr, "./hsh: 1: %s: not found\n", arr[0]), exit(127);
+			fprintf(stderr, "./hsh: 1: %s: not found\n", arr[0]);
 	return (-1);
 }
 		/**
