@@ -101,7 +101,7 @@ int executioner(char **path, char **arr)
 	{
 		pid = fork();
 		if (pid == 0)
-			execve(arr[0], arr, NULL);
+			execve(arr[0], arr, environ);
 		else
 			wait(NULL);
 		return (0); }
@@ -116,7 +116,7 @@ int executioner(char **path, char **arr)
 			pid = fork();
 			if (pid == 0)
 			{
-				execve(valid, arr, NULL);
+				execve(valid, arr, environ);
 				free(valid);
 				exit(0); }
 			else
@@ -153,6 +153,7 @@ int main(void)
 	{
 		if (prompt == 1)
 			printf("Type_Bit$h: ");
+		fflush(stdin);
 		ret = getline(&input, &n, stdin);
 		if (ret == EOF)
 		{
@@ -178,7 +179,6 @@ int main(void)
 			free(input);
 			exit(EXIT_SUCCESS);
 		}
-		fflush(stdin);
 	}
 	return (EXIT_SUCCESS);
 }
