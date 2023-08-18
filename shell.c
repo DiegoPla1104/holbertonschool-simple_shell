@@ -126,7 +126,7 @@ int executioner(char **path, char **arr)
 		free(valid);
 	}
 	if (path[n] == NULL)
-			fprintf(strerror, "bash: %s: command not found\n", arr[0]);
+			fprintf(stderr, "bash: %s: command not found\n", arr[0]);
 	return (-1);
 }
 		/**
