@@ -102,8 +102,6 @@ int executioner(char **path, char **arr)
 		pid = fork();
 		if (pid == 0)
 			execve(arr[0], arr, environ);
-		else if (pid == -1)
-			fprintf(stderr, "./hsh: 1: %s: not found\n", arr[0]), exit(127);
 		else
 			wait(NULL);
 		return (0); }
@@ -118,15 +116,21 @@ int executioner(char **path, char **arr)
 			pid = fork();
 			if (pid == 0)
 			{
-				execve(valid, arr, environ), free(valid), exit(0); }
+				execve(valid, arr, environ);
+				free(valid);
+				exit(0); }
 			else
 			{
-				wait(NULL), free(valid); }
+				wait(NULL);
+				free(valid); }
 			return (0); }
 		free(valid);
 	}
 	if (path[n] == NULL)
-			fprintf(stderr, "./hsh: 1: %s: not found\n", arr[0]);
+	{
+		if (isatty(STDIN_FILENO) == 1)
+			printf("bash: %s: command not found\n", arr[0]);
+	}
 	return (-1);
 }
 		/**
