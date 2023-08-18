@@ -167,7 +167,7 @@ int main(void)
 		if (strcmp(arr[0], "exit") == 0)
 		{
 			free(input), free_grid(arr);
-			return (0);
+			return (2);
 		}
 		if (strcmp(arr[0], "env") == 0)
 			for (envi = environ; *envi != NULL; envi++)
